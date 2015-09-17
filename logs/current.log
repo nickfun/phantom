@@ -1,0 +1,36 @@
+INFO  [2015-09-17 00:15:34,596] org.eclipse.jetty.util.log: Logging initialized @2334ms
+INFO  [2015-09-17 00:15:34,861] io.dropwizard.server.ServerFactory: Starting phantom
+ ____  _                 _                  
+|  _ \| |__   __ _ _ __ | |_ ___  _ __ ___  
+| |_) | '_ \ / _` | '_ \| __/ _ \| '_ ` _ \ 
+|  __/| | | | (_| | | | | || (_) | | | | | |
+|_|   |_| |_|\__,_|_| |_|\__\___/|_| |_| |_|
+                                            
+Nicholas Funnell -- http://nick.gs -- 2015-09-16
+
+INFO  [2015-09-17 00:15:35,022] org.eclipse.jetty.setuid.SetUIDListener: Opened application@5b64c4b7{HTTP/1.1}{0.0.0.0:6060}
+INFO  [2015-09-17 00:15:35,022] org.eclipse.jetty.setuid.SetUIDListener: Opened admin@4763c727{HTTP/1.1}{0.0.0.0:6061}
+INFO  [2015-09-17 00:15:35,026] org.eclipse.jetty.server.Server: jetty-9.2.9.v20150224
+INFO  [2015-09-17 00:15:35,938] io.dropwizard.jersey.DropwizardResourceConfig: The following paths were found for the configured resources:
+
+    NONE
+
+INFO  [2015-09-17 00:15:35,948] org.eclipse.jetty.server.handler.ContextHandler: Started i.d.j.MutableServletContextHandler@749f539e{/,null,AVAILABLE}
+INFO  [2015-09-17 00:15:35,955] io.dropwizard.setup.AdminEnvironment: tasks = 
+
+    POST    /tasks/log-level (io.dropwizard.servlets.tasks.LogConfigurationTask)
+    POST    /tasks/gc (io.dropwizard.servlets.tasks.GarbageCollectionTask)
+
+WARN  [2015-09-17 00:15:35,956] io.dropwizard.setup.AdminEnvironment: 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!    THIS APPLICATION HAS NO HEALTHCHECKS. THIS MEANS YOU WILL NEVER KNOW      !
+!     IF IT DIES IN PRODUCTION, WHICH MEANS YOU WILL NEVER KNOW IF YOU'RE      !
+!    LETTING YOUR USERS DOWN. YOU SHOULD ADD A HEALTHCHECK FOR EACH OF YOUR    !
+!         APPLICATION'S DEPENDENCIES WHICH FULLY (BUT LIGHTLY) TESTS IT.       !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+INFO  [2015-09-17 00:15:35,965] org.eclipse.jetty.server.handler.ContextHandler: Started i.d.j.MutableServletContextHandler@6dd93a21{/,null,AVAILABLE}
+INFO  [2015-09-17 00:15:35,977] org.eclipse.jetty.server.ServerConnector: Started application@5b64c4b7{HTTP/1.1}{0.0.0.0:6060}
+INFO  [2015-09-17 00:15:35,977] org.eclipse.jetty.server.ServerConnector: Started admin@4763c727{HTTP/1.1}{0.0.0.0:6061}
+INFO  [2015-09-17 00:15:35,977] org.eclipse.jetty.server.Server: Started @3717ms
