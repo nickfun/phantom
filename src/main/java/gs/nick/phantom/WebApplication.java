@@ -1,44 +1,23 @@
 package gs.nick.phantom;
 
-import gs.nick.phantom.healthchecks.NullCheck;
-import gs.nick.phantom.resources.RootResource;
-import io.dropwizard.Application;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-import java.util.TimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static spark.Spark.*;
 
-/**
- *
- * @author nfunnell
- */
-public class WebApplication extends Application<WebApplicationConfig> {
+class WebApplication {
 
-    public static void main(String[] args) throws Exception {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        // dropwizard happens
-        new WebApplication().run(args);
-    }
-
-    @Override
-    public String getName() {
-        return "phantom";
-    }
-
-    @Override
-    public void initialize(Bootstrap<WebApplicationConfig> bootstrap) {
-        // nothing to do yet
-    }
-
-    @Override
-    public void run(WebApplicationConfig config, Environment e) {
+    public static void main(String[] args) {
         logSystemInfo();
-        e.healthChecks().register("Example", new NullCheck());
-        e.jersey().register(new RootResource());
+        get("/hello", (req, resp) -> {
+            System.out.println("Request:");
+            System.out.println(req);
+            System.out.println("Response:");
+            System.out.println(resp);
+            return "Hello, world!";
+        });      
     }
 
-    private void logSystemInfo() {
+    private static void logSystemInfo() {
         Logger log = LoggerFactory.getLogger(WebApplication.class);
         log.info("---------- System Info:");
         log.info("java.version = " + System.getProperty("java.version"));
