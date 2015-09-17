@@ -1,5 +1,6 @@
 package gs.nick.phantom;
 
+import gs.nick.phantom.healthchecks.NullCheck;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -27,7 +28,8 @@ public class WebApplication extends Application<WebApplicationConfig> {
     @Override
     public void run(WebApplicationConfig configuration,
             Environment environment) {
-        // nothing to do yet
+    
+        environment.healthChecks().register("Example", new NullCheck());
     }
 
 }
