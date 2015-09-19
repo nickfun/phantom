@@ -2,19 +2,24 @@ package gs.nick.phantom;
 
 import com.google.gson.Gson;
 import com.twilio.sdk.TwilioRestClient;
+import com.twilio.sdk.resource.factory.CallFactory;
+import com.twilio.sdk.resource.instance.Call;
 import com.twilio.sdk.resource.list.IncomingPhoneNumberList;
 import com.twilio.sdk.resource.instance.IncomingPhoneNumber;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static spark.Spark.*;
 
 class WebApplication {
 
-    TwilioRestClient twilio;
-    Gson gson;
-    Logger log;
+    private TwilioRestClient twilio;
+    private Gson gson;
+    private Logger log;
+    private String publicHost;
 
     public static void main(String[] args) {
         WebApplication app = new WebApplication();
@@ -24,10 +29,13 @@ class WebApplication {
 
     private void init() {
         // Log setup
-        log = LoggerFactory.getLogger(WebApplication.class);
+        this.log = LoggerFactory.getLogger(WebApplication.class);
 
         // Gson setup
         this.gson = new Gson();
+
+        // addressable name on the 'net
+        this.publicHost = System.getenv("PUBLIC_HOST");
 
         // Twilio setup
         String SID = System.getenv("TWILIO_ACCOUNT_SID");
@@ -54,6 +62,35 @@ class WebApplication {
         get("/numbers", (request, resposne) -> {
             return gson.toJson(this.getPhoneNumberList());
         });
+
+        /**
+         * Make a request to twilio to call myNum from twilioNum when the call connects, it should get twilml from /connect?target=TARGETNUM
+         */
+        get("/start", (request, response) -> {
+            String twilioNum = request.queryParams("twilioNum");
+            String targetNum = request.queryParams("targetNum");
+            String myNum = request.queryParams("myNum");
+            CallFactory callFactory = twilio.getAccount().getCallFactory();
+            Map<String, String> callParams = new HashMap<>();
+            callParams.put("To", myNum);
+            callParams.put("From", twilioNum);
+            callParams.put("Url", this.publicHost + "/connect?num=" + targetNum);
+            callParams.put("Method", "GET");
+            Call call = callFactory.create(callParams);
+            return "Call SID: " + call.getSid();
+        });
+
+        get("/connect", (request, response) -> {
+            String num = request.queryParams("num");
+            return getCallTwiml(num);
+        });
+    }
+
+    private String getCallTwiml(String number) {
+        return String.format("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<Response>\n"
+                + "    <Dial timeout=\"10\">%s</Dial>\n"
+                + "</Response>", number);
     }
 
     private List<String> getPhoneNumberList() {
