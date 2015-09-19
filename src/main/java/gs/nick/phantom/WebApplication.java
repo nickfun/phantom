@@ -1,23 +1,63 @@
 package gs.nick.phantom;
 
+import com.google.gson.Gson;
+import com.twilio.sdk.TwilioRestClient;
+import com.twilio.sdk.resource.list.IncomingPhoneNumberList;
+import com.twilio.sdk.resource.instance.IncomingPhoneNumber;
+import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static spark.Spark.*;
 
 class WebApplication {
 
+    TwilioRestClient twilio;
+    Gson gson;
+
     public static void main(String[] args) {
-        logSystemInfo();
-        get("/hello", (req, resp) -> {
-            System.out.println("Request:");
-            System.out.println(req);
-            System.out.println("Response:");
-            System.out.println(resp);
-            return "Hello, world!";
-        });      
+        WebApplication app = new WebApplication();
+        app.init();
+        app.router();
     }
 
-    private static void logSystemInfo() {
+    private void init() {
+        this.gson = new Gson();
+        String SID = System.getenv("TWILIO_ACCOUNT_SID");
+        String SECRET = System.getenv("TWILIO_ACCOUNT_SECRET");
+        System.out.println("SID IS " + SID + "\nSECRET IS" + SECRET);
+        this.twilio = new TwilioRestClient(SID, SECRET);
+        String port = System.getenv("PORT");
+        int portNumber = 7070;
+        if (!(port == null || port.length() == 0)) {
+            portNumber = Integer.parseInt(port);
+        }
+        port(portNumber);
+        this.logSystemInfo();
+    }
+
+    private void router() {
+        get("/", (request, response) -> {
+            return "Root\n";
+        });
+
+        get("/numbers", (request, resposne) -> {
+            Gson gson = new Gson();
+            return gson.toJson(this.getPhoneNumberList());
+        });
+    }
+
+    private List<String> getPhoneNumberList() {
+        List<String> numbers = new ArrayList<>();
+        IncomingPhoneNumberList nlist = new IncomingPhoneNumberList(twilio);
+        nlist.setRequestAccountSid(twilio.getAccount().getSid());
+        for (IncomingPhoneNumber num : nlist) {
+            numbers.add(num.getPhoneNumber());
+        }
+        return numbers;
+    }
+
+    private void logSystemInfo() {
         Logger log = LoggerFactory.getLogger(WebApplication.class);
         log.info("---------- System Info:");
         log.info("java.version = " + System.getProperty("java.version"));
