@@ -14,6 +14,7 @@ class WebApplication {
 
     TwilioRestClient twilio;
     Gson gson;
+    Logger log;
 
     public static void main(String[] args) {
         WebApplication app = new WebApplication();
@@ -22,17 +23,26 @@ class WebApplication {
     }
 
     private void init() {
+        // Log setup
+        log = LoggerFactory.getLogger(WebApplication.class);
+
+        // Gson setup
         this.gson = new Gson();
+
+        // Twilio setup
         String SID = System.getenv("TWILIO_ACCOUNT_SID");
         String SECRET = System.getenv("TWILIO_ACCOUNT_SECRET");
-        System.out.println("SID IS " + SID + "\nSECRET IS" + SECRET);
         this.twilio = new TwilioRestClient(SID, SECRET);
+
+        // Port Setup
         String port = System.getenv("PORT");
         int portNumber = 7070;
         if (!(port == null || port.length() == 0)) {
             portNumber = Integer.parseInt(port);
         }
         port(portNumber);
+
+        // Useful Debugging info
         this.logSystemInfo();
     }
 
@@ -42,7 +52,6 @@ class WebApplication {
         });
 
         get("/numbers", (request, resposne) -> {
-            Gson gson = new Gson();
             return gson.toJson(this.getPhoneNumberList());
         });
     }
@@ -58,7 +67,6 @@ class WebApplication {
     }
 
     private void logSystemInfo() {
-        Logger log = LoggerFactory.getLogger(WebApplication.class);
         log.info("---------- System Info:");
         log.info("java.version = " + System.getProperty("java.version"));
         log.info("java.vm.name = " + System.getProperty("java.vm.name"));
@@ -69,7 +77,6 @@ class WebApplication {
         log.info("os.version = " + System.getProperty("os.version"));
         log.info("PID (guess) = " + java.lang.management.ManagementFactory.getRuntimeMXBean().getName());
         log.info("---------- End System Info");
-
     }
 
 }
