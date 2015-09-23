@@ -21,3 +21,9 @@ use `honcho` or `foreman` to run the Procfile
 an example call: `/start?twilioNum=4151112222&targetNum=9253334444&myNum=5105556666`
 
 `/connect` generates the needed TwiML to connect the call from the user to the target. Takes `num` param.
+
+## Requirements
+
+- java 1.8
+- maven
+- honcho or foreman to run a Procfile
