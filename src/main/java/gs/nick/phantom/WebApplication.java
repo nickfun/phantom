@@ -77,7 +77,7 @@ class WebApplication {
             callParams.put("Url", this.publicHost + "/connect?num=" + targetNum);
             callParams.put("Method", "GET");
             Call call = callFactory.create(callParams);
-            return "Call SID: " + call.getSid();
+            return "{\"call_sid\": " + call.getSid() + "}";
         });
 
         get("/connect", (request, response) -> {
