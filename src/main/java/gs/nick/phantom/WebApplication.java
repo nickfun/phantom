@@ -37,6 +37,9 @@ class WebApplication {
         // addressable name on the 'net
         this.publicHost = System.getenv("PUBLIC_HOST");
 
+	// where are static files?
+	staticFileLocation("/static");
+
         // Twilio setup
         String SID = System.getenv("TWILIO_ACCOUNT_SID");
         String SECRET = System.getenv("TWILIO_ACCOUNT_SECRET");

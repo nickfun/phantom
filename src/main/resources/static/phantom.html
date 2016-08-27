@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+		<meta charset="utf-8">
+		<title>Phantom Phone Number</title>
+	</head>
+	<body>
+		<h1>Phone Number Phantom</h1>
+		<div>Your Phone Number</div>
+		<div><input type="number" id="your-number"></div>
+		<div>Phone Number you want to call</div>
+		<div><input type="number" id="target-number"></div>
+		<div>Phone Number you will pretend to be</div>
+		<div><select id="twilio-number"></select></div>
+		<button type="button" id="btn">Make the call</button>
+
+		<script type="text/javascript">
+		(function () {
+			var prefix = "http://localhost:7777";
+			var $twilioNumber = $('#twilio-number');
+			var $yourNumber = $('#your-number');
+			var $targetNumber = $('#target-number');
+			function loadNumberList() {
+				var url = prefix + "/numbers";
+				$.get(url).success(function (response) {
+					var numbers = JSON.parse(response);
+					console.log("Numbers:", numbers);
+					for (var i = 0; i < numbers.length; i++) {
+						var num = numbers[i];
+						var $opt = $('<option />');
+						$opt.val(num);
+						$opt.text(num);
+						$twilioNumber.append($opt);
+					}
+				});
+			}
+			loadNumberList();
+			$('#btn').click(function () {
+				var twilioNum = $twilioNumber.val();
+				var targetNum = $targetnumber.val();
+				var yourNum = $yournumber.val();
+				var url = prefix + "/start?twilioNum=" + twilioNum + "&targetNum=" + targetNum + "&myNum=" + yourNum;
+				$.get(url).success(function () {
+					$('#message').html("<h2>Call in progress</h2>");
+				}).error(function () {
+					$('#message').html("<h2>ERROR could not start call");
+				});
+			});
+		})();
+		</script>
+	</body>
+</html>
